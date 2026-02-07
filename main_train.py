@@ -51,14 +51,19 @@ def prepare_features_labels(data):
     print(f"Features shape: {X.shape}")
     print(f"Label distribution: {y.value_counts().to_dict()}")
     
-    # Handle missing values
-    X = X.fillna(X.mean())
+    # Handle missing values - only on numeric columns
+    numeric_columns = X.select_dtypes(include=[np.number]).columns
+    X[numeric_columns] = X[numeric_columns].fillna(X[numeric_columns].mean())
+    
+    # Drop non-numeric columns or handle them separately
+    X = X.select_dtypes(include=[np.number])
     
     # Normalize features
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
     return X_scaled, y.values, X.columns
+
 
 def train_model(model, train_loader, criterion, optimizer, device):
     model.train()
