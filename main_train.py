@@ -72,7 +72,7 @@ def train_model(model, train_loader, criterion, optimizer, device):
         X, y = X.to(device), y.to(device)
         optimizer.zero_grad()
         outputs = model(X).squeeze()
-        loss = criterion(outputs, y)
+        loss = criterion(outputs, y.float())
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
@@ -91,7 +91,7 @@ def evaluate_model(model, val_loader, criterion, device):
             loss = criterion(outputs, y)
             total_loss += loss.item()
             
-            preds = (outputs > 0.5).cpu().numpy()
+            preds = (torch.sigmoid(outputs) > 0.5).cpu().numpy()
             all_preds.extend(preds)
             all_labels.extend(y.cpu().numpy())
     
@@ -123,8 +123,8 @@ if __name__ == "__main__":
     
     # Initialize model
     input_dim = X_train.shape[1]
-    model = ExfiltrationTransformer(input_dim=input_dim, num_classes=2).to(device)
-    criterion = nn.CrossEntropyLoss()
+    model = ExfiltrationTransformer(input_dim=input_dim, num_classes=1).to(device)
+    criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     
     # Train
