@@ -39,6 +39,9 @@ def prepare_features_labels(data):
     X = data.drop(columns=['Label'] if 'Label' in data.columns else [])
     y = data['Label'] if 'Label' in data.columns else data.iloc[:, -1]
     
+    # Handle NaN values in labels BEFORE converting to int
+    y = y.fillna(0)  # Fill NaN labels with 0 (benign/non-exfiltration)
+    
     # Encode labels if string
     if isinstance(y.iloc[0], str):
         y = (y == 'Exfiltration').astype(int)
@@ -64,7 +67,7 @@ def train_model(model, train_loader, criterion, optimizer, device):
         X, y = X.to(device), y.to(device)
         optimizer.zero_grad()
         outputs = model(X).squeeze()
-        loss = criterion(outputs, y
+        loss = criterion(outputs, y)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
