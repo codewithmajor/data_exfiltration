@@ -80,7 +80,7 @@ def evaluate_model(model, val_loader, criterion, device):
         for X, y in val_loader:
             X, y = X.to(device), y.to(device)
             outputs = model(X).squeeze()
-            loss = criterion(outputs, y
+            loss = criterion(outputs, y)
             total_loss += loss.item()
             
             preds = (outputs > 0.5).cpu().numpy()
