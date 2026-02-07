@@ -64,7 +64,7 @@ def train_model(model, train_loader, criterion, optimizer, device):
         X, y = X.to(device), y.to(device)
         optimizer.zero_grad()
         outputs = model(X).squeeze()
-        loss = criterion(outputs, y.float())
+        loss = criterion(outputs, y
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
@@ -80,7 +80,7 @@ def evaluate_model(model, val_loader, criterion, device):
         for X, y in val_loader:
             X, y = X.to(device), y.to(device)
             outputs = model(X).squeeze()
-            loss = criterion(outputs, y.float())
+            loss = criterion(outputs, y
             total_loss += loss.item()
             
             preds = (outputs > 0.5).cpu().numpy()
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     # Initialize model
     input_dim = X_train.shape[1]
     model = ExfiltrationTransformer(input_dim=input_dim, num_classes=2).to(device)
-    criterion = nn.BCELoss()
+    criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     
     # Train
