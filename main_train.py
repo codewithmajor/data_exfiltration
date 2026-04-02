@@ -110,16 +110,16 @@ if __name__ == "__main__":
     )
 
     # Apply feature scaling to training data
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-
-# Apply SMOTE to balance dataset
-smote = SMOTE(random_state=42)
-X_train, y_train = smote.fit_resample(X_train, y_train)
-
-print(f"Training data shape after SMOTE: {X_train.shape}")
-print(f"Label distribution: {np.bincount(y_train)}")
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+    
+    # Apply SMOTE to balance dataset
+    smote = SMOTE(random_state=42)
+    X_train, y_train = smote.fit_resample(X_train, y_train)
+    
+    print(f"Training data shape after SMOTE: {X_train.shape}")
+    print(f"Label distribution: {np.bincount(y_train)}")
     
     # Convert to tensors
     X_train = torch.FloatTensor(X_train)
