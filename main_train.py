@@ -138,7 +138,7 @@ if __name__ == "__main__":
     input_dim = X_train.shape[1]
     model = ExfiltrationTransformer(input_dim=input_dim, num_classes=1).to(device)
     criterion = nn.BCEWithLogitsLoss()
-    optimizer = optim.Adam(model.parameters(), lr0.0005)
+    optimizer = optim.Adam(model.parameters(), lr=0.0005)
     
     # Train
 # Early stopping parameters
