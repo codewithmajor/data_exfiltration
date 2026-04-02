@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class TransformerEncoder(nn.Module):
-    def __init__(self, input_dim, hidden_dim, num_heads, num_layers, dropout=0.1):
-        super(TransformerEncoder, self).__init__()
+dropout=0.3        super(TransformerEncoder, self).__init__()
         self.embedding = nn.Linear(input_dim, hidden_dim)
         self.pos_encoding = nn.Parameter(torch.randn(1, 1000, hidden_dim))
         
