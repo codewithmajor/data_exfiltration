@@ -6,6 +6,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -107,6 +108,18 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
+
+    # Apply feature scaling to training data
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Apply SMOTE to balance dataset
+smote = SMOTE(random_state=42)
+X_train, y_train = smote.fit_resample(X_train, y_train)
+
+print(f"Training data shape after SMOTE: {X_train.shape}")
+print(f"Label distribution: {np.bincount(y_train)}")
     
     # Convert to tensors
     X_train = torch.FloatTensor(X_train)
@@ -125,15 +138,18 @@ if __name__ == "__main__":
     input_dim = X_train.shape[1]
     model = ExfiltrationTransformer(input_dim=input_dim, num_classes=1).to(device)
     criterion = nn.BCEWithLogitsLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr0.0005)
     
     # Train
+# Early stopping parameters
+best_val_loss = float('inf')
+patience = 10
+patience_counter = 0
     epochs = 50
-    for epoch in range(epochs):
-        train_loss = train_model(model, train_loader, criterion, optimizer, device)
+lr=0.0005        train_loss = train_model(model, train_loader, criterion, optimizer, device)
         val_loss, accuracy, preds, labels = evaluate_model(model, test_loader, criterion, device)
-        
-        if (epoch + 1) % 10 == 0:
+for epoch
+if (epoch + 1) % 10 == 0:
             print(f"Epoch {epoch+1}/{epochs} - Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Accuracy: {accuracy:.4f}")
     
     # Final evaluation
