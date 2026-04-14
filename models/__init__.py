@@ -1,3 +1,3 @@
-from .exfil_transformer import ExfiltrationTransformer, SimpleDNSDetector, TransformerEncoder
+from .exfil_transformer import HybridExfiltrationModel
 
-__all__ = ['ExfiltrationTransformer', 'SimpleDNSDetector', 'TransformerEncoder']
+__all__ = ['ExfiltrationTransformer', 'SimpleDNSDetector']
